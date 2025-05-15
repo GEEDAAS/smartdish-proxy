@@ -13,12 +13,18 @@ app.use(cors({
 
 app.get('/captura', async (req, res) => {
   try {
-    const response = await fetch('https://cd13-2806-2f0-6000-a2ce-8425-bc28-45f1-618f.ngrok-free.app/captura.jpg');  // IP de tu ESP32-CAM
+    const response = await fetch('https://cd13-2806-2f0-6000-a2ce-8425-bc28-45f1-618f.ngrok-free.app/captura.jpg', {
+      headers: {
+        'ngrok-skip-browser-warning': 'true'
+      }
+    });
+
     const contentType = response.headers.get('content-type');
     res.setHeader('Content-Type', contentType);
     const buffer = await response.buffer();
     res.send(buffer);
   } catch (err) {
+    console.error("Error al obtener la imagen:", err);
     res.status(500).send('Error al obtener la imagen');
   }
 });
