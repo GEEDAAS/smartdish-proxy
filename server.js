@@ -13,7 +13,7 @@ app.use(cors({
 
 app.get('/captura', async (req, res) => {
   try {
-    const response = await fetch('http://192.168.22.24/captura.jpg');  // IP de tu ESP32-CAM
+    const response = await fetch('http://192.168.100.78/captura.jpg');  // IP de tu ESP32-CAM
     const contentType = response.headers.get('content-type');
     res.setHeader('Content-Type', contentType);
     const buffer = await response.buffer();
