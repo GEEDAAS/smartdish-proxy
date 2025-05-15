@@ -19,15 +19,22 @@ app.get('/captura', async (req, res) => {
       }
     });
 
-    const contentType = response.headers.get('content-type');
+    if (!response.ok) {
+      const text = await response.text();
+      console.error("Error en respuesta:", response.status, text);
+      return res.status(500).send('Error al obtener la imagen desde ngrok');
+    }
+
+    const contentType = response.headers.get('content-type') || 'image/jpeg';
     res.setHeader('Content-Type', contentType);
     const buffer = await response.buffer();
     res.send(buffer);
   } catch (err) {
-    console.error("Error al obtener la imagen:", err);
+    console.error("Error general:", err);
     res.status(500).send('Error al obtener la imagen');
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Servidor proxy escuchando en http://localhost:${PORT}`);
